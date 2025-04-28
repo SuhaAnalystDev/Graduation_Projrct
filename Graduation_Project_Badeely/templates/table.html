@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <title>Table {{ table }}</title>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/style.css" />
+    <script src="/static/JS/main.js"></script>
+    <style>
+      .table td {
+        min-width: 5rem;
+      }
+      .table td .btn {
+        padding: 0.375rem 0.75rem !important;
+      }
+    </style>
+  </head>
+  <body class="min-vh-100 d-flex flex-column cairo-regular">
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary py-1"
+      style="background-image: linear-gradient(to right, #1e7b93, #add5db)"
+    >
+      <div class="container-fluid flex-row-reverse">
+        <div class="d-flex">
+          <ul
+            class="nav-sp navbar-nav d-flex flex-row justify-content-center align-items-center"
+          >
+            <li class="nav-item dropdown-center">
+              <a
+                class="nav-link px-2 dropdown-toggle d-flex justify-content-center align-items-center"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="ps-2 user_name">
+                  <p class="m-0">اسم المستخدم</p>
+                </div>
+
+                <div
+                  class="d-flex justify-content-center align-items-center"
+                  style="width: 23px; height: 23px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-person-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+                    />
+                  </svg>
+                </div>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                  <a
+                    class="dropdown-item d-flex justify-content-between align-items-center text-end"
+                  >
+                    <div class="">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-gear-wide-connected"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"
+                        />
+                      </svg>
+                      <span class="mx-2">الإعدادات</span>
+                    </div>
+                    <svg
+                      class="arrow"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xml:space="preserve"
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      shape-rendering="geometricPrecision"
+                      text-rendering="geometricPrecision"
+                      image-rendering="optimizeQuality"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      viewBox="0 0 512 298.04"
+                    >
+                      <path
+                        fill-rule="nonzero"
+                        d="M12.08 70.78c-16.17-16.24-16.09-42.54.15-58.7 16.25-16.17 42.54-16.09 58.71.15L256 197.76 441.06 12.23c16.17-16.24 42.46-16.32 58.71-.15 16.24 16.16 16.32 42.46.15 58.7L285.27 285.96c-16.24 16.17-42.54 16.09-58.7-.15L12.08 70.78z"
+                      />
+                    </svg>
+                  </a>
+                  <ul
+                    class="list-group rounded-0 text-end border-0 border-top mt-2 py-2 px-0"
+                  >
+                    <li class="list-group-item border-0">
+                      <a class="" href="{{ url_for('profile') }}">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-person-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                          <path
+                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"
+                          />
+                        </svg>
+                        <span class="mx-2">الملف الشخصي</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <li>
+                  <a
+                    class="dropdown-item text-danger text-end"
+                    href="{{ url_for('login_page') }}"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="17"
+                      height="17"
+                      fill="currentColor"
+                      class="bi bi-box-arrow-in-left"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z"
+                      />
+                    </svg>
+                    <span class="mx-2">تسجيل الخروج</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center btn-mode"
+                  style="height: 31px; width: 43px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-sun-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"
+                    />
+                  </svg></button
+              ></a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center"
+                  style="height: 31px; color: #fff"
+                >
+                  AR
+                </button>
+              </a>
+            </li>
+          </ul>
+          <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <a
+          class="navbar-brand p-0 m-0 order-lg-1"
+          href="{{ url_for('dashboard') }}"
+          ><img
+            src="/static/images/logo.png"
+            alt="logo"
+            width="100"
+            height="55"
+        /></a>
+      </div>
+    </nav>
+
+    <!-- Modal for Adding New Row -->
+    <div
+      class="modal fade"
+      dir="ltr"
+      id="addModal"
+      tabindex="-1"
+      aria-labelledby="addModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <form method="POST" action="/table/{{ table }}/add">
+          <div class="modal-content">
+            <div class="modal-header justify-content-end">
+              <h5
+                class="modal-title"
+                id="addModalLabel"
+                style="text-align: right"
+              >
+                إضافة بيانات جديدة
+              </h5>
+              <button
+                type="button"
+                class="btn-close ms-3"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body row g-2">
+              {% for col in columns %}
+              <div class="col-md-6">
+                <label class="form-label">{{ col }}</label>
+                <input type="text" name="{{ col }}" class="form-control" />
+              </div>
+              {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn px-4"
+                data-bs-dismiss="modal"
+                style="background-color: #d9d9d9; color: #000"
+              >
+                إلغاء
+              </button>
+              <button
+                type="submit"
+                class="btn px-4"
+                style="background-color: #278a9f; color: #fff"
+              >
+                إضافة
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="container-fluid my-5 flex-grow-1">
+      <h2 class="text-center text-capitalize my-4">Table {{ table }}</h2>
+      <!-- Table to Display Rows -->
+      <div class="table-responsive rounded-1 w-100 my-3" dir="ltr">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              {% for col in columns %}
+              <th>{{ col }}</th>
+              {% endfor %}
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr id="row-{{ row.id }}">
+              {% for col in columns %}
+              <td>
+                {% if col != 'id' %}
+                <input
+                  type="text"
+                  value="{{ row[col] }}"
+                  id="cell-{{ row.id }}-{{ col }}"
+                  class="form-control"
+                />
+                {% else %} {{ row[col] }} {% endif %}
+              </td>
+              {% endfor %}
+              <td
+                class="w-100 h-100 d-flex justify-content-center align-items-center"
+                style="white-space: nowrap; min-height: 54px"
+              >
+                <button
+                  class="btn h-100 text-success d-flex justify-content-center align-items-cente border-end rounded-0"
+                  onclick="updateRow('{{ table }}', '{{ row.id }}')"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-arrow-repeat"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="btn h-100 text-danger d-flex justify-content-center align-items-center"
+                  onclick="deleteRow('{{ table }}', '{{ row.id }}')"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-trash3"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"
+                    />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="my-3">
+        <button
+          class="btn btn-primary mb-3 px-4"
+          data-bs-toggle="modal"
+          data-bs-target="#addModal"
+          style="background-color: #278a9f; color: #fff"
+        >
+          إضافة
+        </button>
+        <a
+          href="{{ url_for('tables') }}"
+          class="btn btn-secondary mb-3 px-4"
+          style="background-color: #d9d9d9; color: #000"
+          >رجوع</a
+        >
+      </div>
+    </div>
+
+    <footer class="w-100 mt-5 navbar justify-content-center align-items-center">
+      <p class="m-0 text-center fw-semibold" style="font-size: 15px">
+        &copy; جميع الحقوق محفوظة - 2025
+      </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/JS/bootstrap.bundle.min.js"></script>
+    <script src="/static/JS/popper.min.js"></script>
+    <script>
+      function updateRow(table, rowId) {
+        const updatedData = {};
+        const columns = document.querySelectorAll(`#row-${rowId} input`);
+        columns.forEach((input) => {
+          const colName = input.id.split("-")[2];
+          updatedData[colName] = input.value;
+        });
+
+        const formData = new FormData();
+        for (const [column, value] of Object.entries(updatedData)) {
+          formData.append(column, value);
+        }
+
+        fetch(`/table/${table}/update/${rowId}`, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Row updated successfully!");
+              location.reload();
+            } else {
+              alert("Failed to update row.");
+            }
+          })
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Error with request.");
+          });
+      }
+
+      function deleteRow(table, rowId) {
+        fetch(`/table/${table}/delete/${rowId}`, {
+          method: "POST",
+        }).then(() => location.reload());
+      }
+    </script>
+  </body>
+</html>

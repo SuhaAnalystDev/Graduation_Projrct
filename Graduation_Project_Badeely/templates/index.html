@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة بديلي</title>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/style.css" />
+    <style>
+        @media (max-width: 575px) {
+            .col:first-of-type {
+                order: 2 !important;
+            }
+            .col:last-of-type {
+                order: 1 !important;
+                height: 40% !important;
+            }
+        }
+    </style>
+  </head>
+  <body class="vh-100 cairo-regular">
+    <div class="row row-cols-1 row-cols-sm-2 w-100 h-100 m-0">
+      <div class="col h-100 d-flex flex-column justify-content-center align-items-center text-center" style="background-color: #1e7b93; color: #fff;">
+        <h1> مرحبا بك في بدّيلي</h1>
+        <p class="my-3 px-2">منصة أكاديمية تساعدك على البحث عن بديل للتبديل شعبتك الأكاديمية بكل سهولة</p>
+        <div class="my-3">
+            <a href="/register_page" class="btn border btn-custom rounded-0"  style="color: #fff;">انشاء حساب جديد كطالب</a>
+        </div>
+        <div class="mb-4">
+            <a href="/register_ac" class="btn border btn-custom rounded-0"  style="color: #fff;">انشاء حساب جديد كمسؤول لجنة ارشاد</a>
+        </div>
+      </div>
+      <div class="col h-100 d-flex justify-content-center align-items-center order--sm-1" style="background-color: #f5f2ed;">
+        <img src="/static/images/photo_2024-11-27_02-18-50.jpg" alt="" style="width: 350px; height: 250px; max-width: 100%;">
+      </div>
+    </div>
+    <script src="/static/JS/bootstrap.bundle.min.js"></script>
+    <script src="/static/JS/popper.min.js"></script>
+  </body>
+</html>

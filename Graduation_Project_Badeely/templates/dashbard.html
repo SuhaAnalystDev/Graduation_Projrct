@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة التحكم</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/style.css" />
+    <script src="/static/JS/chart.umd.js"></script>
+    <script src="/static/JS/main.js"></script>
+    <style>
+      .col.navbar {
+        width: 85px !important;
+        flex: 0 0 auto !important;
+      }
+      .sidebar-menu .nav-link {
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center;
+        padding: 0 !important;
+      }
+      .sidebar-menu .nav-link span {
+        margin-right: 0 !important;
+        font-size: 0.7rem;
+      }
+      .sidebar-menu .nav-link {
+        width: 100%;
+        justify-content: flex-start !important;
+        padding-right: 0px !important;
+      }
+      .svg-icon {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 10px;
+      }
+      .sidebar-divider {
+        margin: 20px 0px;
+      }
+      .card-summary {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 20px;
+      }
+      .icon_box {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background-color: #add5db;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .icon_box svg {
+        width: 25px;
+        height: 25px;
+        fill: #2d576e;
+      }
+      h5.card-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      h5.total {
+        font-size: 12px;
+        font-weight: 600;
+        color: #2d576e;
+      }
+      h4.card-title {
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 700;
+        padding-top: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .card-status .col {
+        padding: 0.4rem !important;
+      }
+      .card-status .card {
+        max-height: 325px !important;
+      }
+      .card-status .card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem !important;
+      }
+      .card-status .card span {
+        display: block;
+        font-size: 25px;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+      .card-status canvas {
+        width: 80px !important;
+        height: 80px !important;
+      }
+    </style>
+  </head>
+  <body
+    class="min-vh-100 min-vw-100 d-flex flex-column cairo-regular"
+    style="overflow-x: hidden"
+  >
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary py-1"
+      style="background-image: linear-gradient(to right, #1e7b93, #add5db)"
+    >
+      <div class="container-fluid flex-row-reverse">
+        <div class="d-flex ms-3">
+          <ul
+            class="nav-sp navbar-nav d-flex flex-row justify-content-center align-items-center"
+          >
+            <li class="nav-item dropdown-center">
+              <a
+                class="nav-link px-2 dropdown-toggle d-flex justify-content-center align-items-center"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+              <div class="ps-2 user_name">
+                <p class="m-0">اسم المستخدم</p>
+              </div>
+
+                <div
+                  class="d-flex justify-content-center align-items-center"
+                  style="width: 23px; height: 23px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-person-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+                    />
+                  </svg>
+                </div>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                  <a
+                    class="dropdown-item d-flex justify-content-between align-items-center text-end"
+                  >
+                    <div class="">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-gear-wide-connected"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"
+                        />
+                      </svg>
+                      <span class="mx-2">الإعدادات</span>
+                    </div>
+                    <svg
+                      class="arrow"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xml:space="preserve"
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      shape-rendering="geometricPrecision"
+                      text-rendering="geometricPrecision"
+                      image-rendering="optimizeQuality"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      viewBox="0 0 512 298.04"
+                    >
+                      <path
+                        fill-rule="nonzero"
+                        d="M12.08 70.78c-16.17-16.24-16.09-42.54.15-58.7 16.25-16.17 42.54-16.09 58.71.15L256 197.76 441.06 12.23c16.17-16.24 42.46-16.32 58.71-.15 16.24 16.16 16.32 42.46.15 58.7L285.27 285.96c-16.24 16.17-42.54 16.09-58.7-.15L12.08 70.78z"
+                      />
+                    </svg>
+                  </a>
+                  <ul
+                    class="list-group rounded-0 text-end border-0 border-top mt-2 py-2 px-0"
+                  >
+                    <li class="list-group-item border-0">
+                      <a class="" href="{{ url_for('profile') }}">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-person-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                          <path
+                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"
+                          />
+                        </svg>
+                        <span class="mx-2">الملف الشخصي</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <li>
+                  <a
+                    class="dropdown-item text-danger text-end"
+                    href="{{ url_for('login_page') }}"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="17"
+                      height="17"
+                      fill="currentColor"
+                      class="bi bi-box-arrow-in-left"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z"
+                      />
+                    </svg>
+                    <span class="mx-2">تسجيل الخروج</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center btn-mode"
+                  style="height: 31px; width: 43px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-sun-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"
+                    />
+                  </svg></button
+              ></a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center"
+                  style="height: 31px; color: #fff"
+                >
+                  AR
+                </button>
+              </a>
+            </li>
+          </ul>
+          <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <a
+          class="navbar-brand p-0 m-0 order-lg-1"
+          href="{{ url_for('dashboard') }}"
+          ><img
+            src="/static/images/logo.png"
+            alt="logo"
+            width="100"
+            height="55"
+        /></a>
+      </div>
+    </nav>
+    <div class="container-fluid flex-grow-1">
+      <div class="row row-cols-2 justify-content-center vw-100 h-100">
+        <!-- Sidebar -->
+        <nav
+          class="col navbar navbar-expand-lg flex-column align-items-start py-4 border-1 border-start"
+          style="background-color: transparent"
+        >
+          <div class="container-fluid h-100 align-items-start">
+            <div
+              class="sidebar-menu navbar-collapse flex-column align-items-start"
+              id="navbarTogglerDemo02"
+            >
+              <ul class="navbar-nav pe-0 mb-2 mb-lg-0 flex-column w-100">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard') }}">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="svg-icon bi bi-speedometer2"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4M3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.39.39 0 0 0-.029-.518z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A8 8 0 0 1 0 10m8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3"
+                      />
+                    </svg>
+                    <span class="me-2">لوحة التحكم</span>
+                  </a>
+                </li>
+                <!-- <hr class="sidebar-divider" /> -->
+                <!-- <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="svg-icon bi bi-people"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"
+                      />
+                    </svg>
+                    <span class="me-2">المستخدمين</span>
+                  </a>
+                </li> -->
+                <hr class="sidebar-divider" />
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{ url_for('tables')}}">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="svg-icon bi bi-table"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"
+                      />
+                    </svg>
+                    <span class="me-2">الجداول</span>
+                  </a>
+                </li>
+                <hr class="sidebar-divider" />
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col px-sm-4 mx-2 flex-grow-1 mb-5 pt-3 pb-5">
+          <div class="ps-4 pe-3">
+            <div
+              class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-5 border-bottom"
+            >
+              <h1 class="pe-2 mb-2">لوحة التحكم</h1>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row g-3 pb-4" style="min-height: 130px">
+              <div class="col-md-6 col-lg-3">
+                <div class="card card-summary bg-orders p-3">
+                  <div class="">
+                    <h5 class="card-title">الطلاب</h5>
+                    <h5 class="total">{{students_count}} <span>طلاب</span></h5>
+                  </div>
+                  <div class="icon_box">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-mortarboard"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917zM8 8.46 1.758 5.965 8 3.052l6.242 2.913z"
+                      />
+                      <path
+                        d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466zm-.068 1.873.22-.748 3.496 1.311a.5.5 0 0 0 .352 0l3.496-1.311.22.748L8 12.46z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card card-summary bg-sales p-3">
+                  <div class="">
+                    <h5 class="card-title">لجنة الإرشاد</h5>
+                    <h5 class="total">
+                      {{ advisors_count }} <span>أعضاء</span>
+                    </h5>
+                  </div>
+                  <div class="icon_box">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-people"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card card-summary bg-revenue p-3">
+                  <div class="">
+                    <h5 class="card-title">الطلبات المسجلة</h5>
+                    <h5 class="total">{{ requests_count }} <span>طلب</span></h5>
+                  </div>
+                  <div class="icon_box">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-file-text"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"
+                      />
+                      <path
+                        d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-lg-3">
+                <div class="card card-summary bg-profit p-3">
+                  <div class="">
+                    <h5 class="card-title">الطلبات المتطابقة</h5>
+                    <h5 class="total">
+                      {{ matched_requests_count }} <span>طلب</span>
+                    </h5>
+                  </div>
+                  <div class="icon_box">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-file-text"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"
+                      />
+                      <path
+                        d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart Section -->
+            <div class="row row-cols-1 row-cols-md-2 mb-5">
+              <div class="col col-md-4 px-md-1 order-2 order-md-2 order-lg-1">
+                <div class="card chart-card mt-4 px-1">
+                  <div
+                    class="card-body"
+                    id="genderChart"
+                    data-labels="{{ g_labels }}"
+                    data-values="{{ g_data }}"
+                  >
+                    <canvas id="gender_chart" height="300"></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chart Section -->
+              <div class="col col-md-8 px-md-1 order-1 order-md-2">
+                <div class="card chart-card mt-4 px-1">
+                  <div
+                    class="card-body"
+                    id="newUsersChart"
+                    data-labels="{{ labels }}"
+                    data-values="{{ data }}"
+                  >
+                    <canvas id="growth_chart" height="300"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 pb-4 card-status"
+            >
+              <div class="col">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    id="pendingChart"
+                    data-values="{{ pending }}"
+                  >
+                    <h4 class="card-title">قيد الإجراء</h4>
+                    <canvas
+                      id="pending_chart"
+                      width="200"
+                      height="200"
+                    ></canvas>
+                    <span class="number">{{ pending }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    id="pendingApprovalChart"
+                    data-values="{{ pending_approval }}"
+                  >
+                    <h4 class="card-title">بانتظار الموافقة</h4>
+                    <canvas
+                      id="pending_approval_chart"
+                      width="200"
+                      height="200"
+                    ></canvas>
+                    <span class="number">{{ pending_approval }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    id="approvedChart"
+                    data-values="{{ approved }}"
+                  >
+                    <h4 class="card-title">المقبولة</h4>
+                    <canvas
+                      id="approved_chart"
+                      width="200"
+                      height="200"
+                    ></canvas>
+                    <span class="number">{{ approved }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card">
+                  <div
+                    class="card-body"
+                    id="rejectedChart"
+                    data-values="{{ rejected }}"
+                  >
+                    <h4 class="card-title">المرفوضة</h4>
+                    <canvas
+                      id="rejected_chart"
+                      width="200"
+                      height="200"
+                    ></canvas>
+                    <span class="number">{{ rejected }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <footer class="w-100 navbar justify-content-center align-items-center">
+      <p class="m-0 text-center fw-semibold" style="font-size: 15px">
+        &copy; جميع الحقوق محفوظة - 2025
+      </p>
+    </footer>
+    <script src="/static/JS/bootstrap.bundle.min.js"></script>
+    <script src="/static/JS/popper.min.js"></script>
+    <script>
+      const labels_g = JSON.parse(
+        document.getElementById("genderChart").getAttribute("data-labels")
+      );
+      const data_g = JSON.parse(
+        document.getElementById("genderChart").getAttribute("data-values")
+      );
+      const ctx1 = document.getElementById("gender_chart").getContext("2d");
+      const labels_n = JSON.parse(
+        document.getElementById("newUsersChart").getAttribute("data-labels")
+      );
+      const data_n = JSON.parse(
+        document.getElementById("newUsersChart").getAttribute("data-values")
+      );
+      const ctx2 = document.getElementById("growth_chart").getContext("2d");
+
+      const data_pending = JSON.parse(
+        document.getElementById("pendingChart").getAttribute("data-values")
+      );
+      const ctx3 = document.getElementById("pending_chart").getContext("2d");
+
+      const data_pending_approval = JSON.parse(
+        document
+          .getElementById("pendingApprovalChart")
+          .getAttribute("data-values")
+      );
+      const ctx4 = document
+        .getElementById("pending_approval_chart")
+        .getContext("2d");
+
+      const data_approved = JSON.parse(
+        document.getElementById("approvedChart").getAttribute("data-values")
+      );
+      const ctx5 = document.getElementById("approved_chart").getContext("2d");
+
+      const data_rejected = JSON.parse(
+        document.getElementById("rejectedChart").getAttribute("data-values")
+      );
+      const ctx6 = document.getElementById("rejected_chart").getContext("2d");
+
+      console.log(labels_g, data_g);
+
+      const translate = {
+        Female: "أنثى",
+        Male: "ذكر",
+      };
+
+      const labels = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      const month_short = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+
+      const arLabels = labels_g.map((label) => translate[label] || label);
+
+      const dataMap = {};
+      labels_n.forEach((month, i) => {
+        dataMap[month] = data_n[i];
+      });
+
+      Chart.defaults.scales.linear.min = 0;
+
+      const map_out = labels.map((month) => dataMap[month] || 0);
+      console.log(map_out);
+
+      const labels_short = labels.map((month) => {
+        const index = labels.indexOf(month);
+        return month_short[index];
+      });
+
+      new Chart(ctx1, {
+        type: "doughnut",
+        data: {
+          labels: arLabels,
+          datasets: [
+            {
+              data: data_g,
+              backgroundColor: ["#278a9f", "#2d576e"],
+              hoverOffset: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+
+      new Chart(ctx2, {
+        type: "line",
+        data: {
+          labels: labels_short,
+          datasets: [
+            {
+              label: "عدد المستخدمين الجدد",
+              data: map_out,
+              fill: false,
+              // backgroundColor: "transparent",
+              borderColor: "#278a9f",
+              borderWidth: 2,
+              tension: 0.1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: "عدد المستخدمين",
+              },
+              ticks: {
+                stepSize: 1,
+              },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "الشهر",
+              },
+            },
+          },
+        },
+      });
+
+      new Chart(ctx3, {
+        type: "doughnut",
+        data: {
+          labels: "",
+          datasets: [
+            {
+              data: [data_pending, 10 - data_pending],
+              backgroundColor: ["#278a9f", "#cde6ea"],
+              hoverOffset: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: { enabled: false },
+            legend: { display: false },
+          },
+        },
+      });
+
+      new Chart(ctx4, {
+        type: "doughnut",
+        data: {
+          labels: "",
+          datasets: [
+            {
+              data: [data_pending_approval, 10],
+              backgroundColor: ["#f5a524", "#fff1da"],
+              hoverOffset: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: { enabled: false },
+            legend: { display: false },
+          },
+        },
+      });
+
+      new Chart(ctx5, {
+        type: "doughnut",
+        data: {
+          labels: "",
+          datasets: [
+            {
+              data: [data_approved, 10],
+              backgroundColor: ["#6bc900", "#d3f8d3"],
+              hoverOffset: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: { enabled: false },
+            legend: { display: false },
+          },
+        },
+      });
+
+      new Chart(ctx6, {
+        type: "doughnut",
+        data: {
+          labels: "",
+          datasets: [
+            {
+              data: [data_rejected, 10],
+              backgroundColor: ["#ff4d4f", "#f8d3d3"],
+              hoverOffset: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: { enabled: false },
+            legend: { display: false },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

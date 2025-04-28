@@ -1,0 +1,102 @@
+Metadata-Version: 2.1
+Name: mdpd
+Version: 0.2.1
+Summary: a simpler tool for convert markdown table to pandas
+Home-page: https://github.com/kyoto7250/mdpd
+Keywords: padnas,markdown,table,test,development
+Author: kyoto7250
+Author-email: 50972773+kyoto7250@users.noreply.github.com
+Requires-Python: >=3.9,<3.13
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pandas (>=2.1.1,<3.0.0)
+Project-URL: Repository, https://github.com/kyoto7250/mdpd
+Description-Content-Type: text/markdown
+
+# mdpd
+`mdpd` is a simpler tool for convert markdown table to pandas.
+This tool is a lightweight tool for testing a code, so note that we are not validating the user's input.
+
+## install
+```bash
+pip install mdpd
+```
+
+## usage
+
+```python
+import mdpd
+
+df = mdpd.from_md("""
++------------+-------+
+| id         | score |
++------------+-------+
+| 1          | 15    |
+| 2          | 11    |
+| 3          | 11    |
+| 4          | 20    |
++------------+-------+
+""")
+
+print(df)
+#   id score
+# 0  1    15
+# 1  2    11
+# 2  3    11
+# 3  4    20
+```
+
+```python
+# the header can be overwritten if the header exists
+import mdpd
+df = mdpd.from_md("""
+| 1          | 15    |
+| 2          | 11    |
+| 3          | 11    |
+| 4          | 20    |
+""", header=["id", "score"])
+
+print(df)
+#   id score
+# 0  1    15
+# 1  2    11
+# 2  3    11
+# 3  4    20
+```
+
+
+## accepted table patterns
+
+```markdown
+| Syntax    | Description |
+| --------- | ----------- |
+| Header    | Title       |
+| Paragraph | Text        |
+```
+
+```markdown
++------------+-------------+
+| Syntax     | Description |
++------------+-------------+
+| Header     | Title       |
+| Paragraph  | Text        |
++------------+-------------+
+```
+
+```markdown
+| Syntax    | Description |
+| :-------- | ----------: |
+| Header    | Title       |
+| Paragraph | Text        |
+```
+
+```markdown
+| Header    | Title       |
+| Paragraph | Text        |
+```
+
+## contribute
+If you have suggestions for features or improvements to the code, please feel free to create an issue or PR.
+

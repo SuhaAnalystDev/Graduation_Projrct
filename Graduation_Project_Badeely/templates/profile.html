@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الملف الشخصي</title>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/style.css" />
+    <script type="module" src="/static/JS/main.js"></script>
+    <style>
+      label {
+        color: var(--bs-text-color);
+      }
+    </style>
+  </head>
+  <body class="min-vh-100 d-flex flex-column cairo-regular">
+    <nav
+      class="navbar navbar-expand-lg bg-body-tertiary py-1"
+      style="background-image: linear-gradient(to right, #1e7b93, #add5db)"
+    >
+      <div class="container-fluid flex-row-reverse">
+        <div class="d-flex">
+          <ul
+            class="nav-sp navbar-nav d-flex flex-row justify-content-center align-items-center"
+          >
+            <li class="nav-item dropdown-center">
+              <a
+                class="nav-link px-2 dropdown-toggle d-flex justify-content-center align-items-center"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div class="ps-2 user_name">
+                  <p class="m-0">اسم المستخدم</p>
+                </div>
+
+                <div
+                  class="d-flex justify-content-center align-items-center"
+                  style="width: 23px; height: 23px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-person-circle"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                    <path
+                      fill-rule="evenodd"
+                      d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+                    />
+                  </svg>
+                </div>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-submenu">
+                  <a
+                    class="dropdown-item d-flex justify-content-between align-items-center text-end"
+                  >
+                    <div class="">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-gear-wide-connected"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"
+                        />
+                      </svg>
+                      <span class="mx-2">الإعدادات</span>
+                    </div>
+                    <svg
+                      class="arrow"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xml:space="preserve"
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      shape-rendering="geometricPrecision"
+                      text-rendering="geometricPrecision"
+                      image-rendering="optimizeQuality"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      viewBox="0 0 512 298.04"
+                    >
+                      <path
+                        fill-rule="nonzero"
+                        d="M12.08 70.78c-16.17-16.24-16.09-42.54.15-58.7 16.25-16.17 42.54-16.09 58.71.15L256 197.76 441.06 12.23c16.17-16.24 42.46-16.32 58.71-.15 16.24 16.16 16.32 42.46.15 58.7L285.27 285.96c-16.24 16.17-42.54 16.09-58.7-.15L12.08 70.78z"
+                      />
+                    </svg>
+                  </a>
+                  <ul
+                    class="list-group rounded-0 text-end border-0 border-top mt-2 py-2 px-0"
+                  >
+                    <li class="list-group-item border-0">
+                      <a class="" href="{{ url_for('profile') }}">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-person-square"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                          <path
+                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"
+                          />
+                        </svg>
+                        <span class="mx-2">الملف الشخصي</span>
+                      </a>
+                    </li>
+
+                    <li class="list-group-item border-0">
+                      <a href="{{ url_for('imageTool_page', edit= 'True') }}">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          class="bi bi-table"
+                          viewBox="0 0 16 16"
+                        >
+                          <path
+                            d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm15 2h-4v3h4zm0 4h-4v3h4zm0 4h-4v3h3a1 1 0 0 0 1-1zm-5 3v-3H6v3zm-5 0v-3H1v2a1 1 0 0 0 1 1zm-4-4h4V8H1zm0-4h4V4H1zm5-3v3h4V4zm4 4H6v3h4z"
+                          />
+                        </svg>
+                        <span class="mx-2">تعديل الجدول الدراسي</span>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <li>
+                  <a
+                    class="dropdown-item text-danger text-end"
+                    href="{{ url_for('login_page') }}"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="17"
+                      height="17"
+                      fill="currentColor"
+                      class="bi bi-box-arrow-in-left"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0z"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708z"
+                      />
+                    </svg>
+                    <span class="mx-2">تسجيل الخروج</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center btn-mode"
+                  style="height: 31px; width: 43px"
+                >
+                  <svg
+                    class="icon w-100 h-100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-sun-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708"
+                    />
+                  </svg></button
+              ></a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">
+                <button
+                  class="btn d-flex justify-content-center align-items-center"
+                  style="height: 31px; color: #fff"
+                >
+                  AR
+                </button>
+              </a>
+            </li>
+          </ul>
+          <button
+            class="navbar-toggler border-0"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo03"
+            aria-controls="navbarTogglerDemo03"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+        <a class="navbar-brand p-0 m-0 order-lg-1" href="{{ url_for('home') }}"
+          ><img
+            src="/static/images/logo.png"
+            alt="logo"
+            width="100"
+            height="55"
+        /></a>
+
+        <div class="collapse navbar-collapse p-3 my-3" id="navbarTogglerDemo03">
+          <ul class="navbar-nav nav-underline p-0" style="width: 6rem">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                aria-current="page"
+                href="{{ url_for('home') }}"
+              >
+                <svg
+                  class="d-block ms-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-house-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"
+                  />
+                  <path
+                    d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"
+                  />
+                </svg>
+                <span>الرئيسية</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('requests_page') }}">
+                <svg
+                  class="d-block ms-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-file-earmark-text-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"
+                  />
+                </svg>
+                <span>الطلبات</span></a
+              >
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <svg
+                  class="d-block ms-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-speedometer"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2M3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.39.39 0 0 0-.029-.518z"
+                  />
+                  <path
+                    fill-rule="evenodd"
+                    d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"
+                  />
+                </svg>
+                <span>الخدمات</span>
+              </a>
+              <ul class="dropdown-menu px-2" style="min-width: 12rem">
+                <li>
+                  <a
+                    class="dropdown-item rounded text-end"
+                    href="{{ url_for('switch_sectinon_request_page') }}"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      class="bi bi-file-text"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"
+                      />
+                      <path
+                        d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"
+                      />
+                    </svg>
+                    <span class="me-2">طلب تبديل شعبة</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg border border-bottom">
+      <div class="container justify-content-center">
+        <ul
+          class="navbar-nav nav-underline flex-row justify-content-center align-items-center mb-2 mb-lg-0"
+        >
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              aria-current="page"
+              href="{{ url_for('home') }}"
+            >
+              <svg
+                class="d-block ms-2"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-house-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z"
+                />
+                <path
+                  d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z"
+                />
+              </svg>
+              <span>الرئيسية</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('requests_page') }}">
+              <svg
+                class="d-block ms-2"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-file-earmark-text-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1z"
+                />
+              </svg>
+              <span>الطلبات</span></a
+            >
+          </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <svg
+                class="d-block ms-2"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-speedometer"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 2a.5.5 0 0 1 .5.5V4a.5.5 0 0 1-1 0V2.5A.5.5 0 0 1 8 2M3.732 3.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707M2 8a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 8m9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5m.754-4.246a.39.39 0 0 0-.527-.02L7.547 7.31A.91.91 0 1 0 8.85 8.569l3.434-4.297a.39.39 0 0 0-.029-.518z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M6.664 15.889A8 8 0 1 1 9.336.11a8 8 0 0 1-2.672 15.78zm-4.665-4.283A11.95 11.95 0 0 1 8 10c2.186 0 4.236.585 6.001 1.606a7 7 0 1 0-12.002 0"
+                />
+              </svg>
+              <span>الخدمات</span>
+            </a>
+            <ul class="dropdown-menu px-2" style="min-width: 12rem">
+              <li>
+                <a
+                  class="dropdown-item rounded text-end"
+                  href="{{ url_for('switch_sectinon_request_page') }}"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-file-text"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"
+                    />
+                    <path
+                      d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"
+                    />
+                  </svg>
+                  <span class="me-2">طلب تبديل شعبة</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container my-4 pt-2 flex-grow-1">
+      <ul class="navbar-nav flex-row align-items-center border-bottom py-2">
+        <li class="nav-item mx-2">
+          <a class="nav-link" aria-current="page" href="{{ url_for('home') }}"
+            >الرئيسية</a
+          >
+        </li>
+        <span class="text-secondary">/</span>
+        <li class="nav-item mx-2">
+          <a class="nav-link active" href="{{ url_for('profile') }}"
+            >ملفي الشخصي</a
+          >
+        </li>
+      </ul>
+
+      {% if message %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% if url %}
+      <script>
+        if ("{{ category }}" === "success") {
+          setTimeout(() => {
+            window.location.href = "{{ url }}";
+          }, 500);
+        }
+      </script>  
+      {% endif %}    
+      {% endif %}
+
+      <div
+        class="card mx-auto w-100 border-0 my-5 px-3 d-flex align-items-center"
+        style="max-width: 60rem"
+      > 
+      {% if user_info%}
+        <div class="card-body my-4">
+          <h3 class="card-title text-center mb-4 pb-5">الملف الشخصي</h3>
+          <form
+            action="/update_profile"
+            method="post"
+            class="w-sw row row-cols-1 row-cols-sm-2 justify-content-center align-items-center"
+          >
+            <div class="col mb-3">
+              <label class="mb-2">الرقم الجامعي :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="academic_number"
+                value="{{ user_info[0]['Academic_Number'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">الإيميل الجامعي :</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                value="{{ user_info[0]['Email'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">الاسم الكامل :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                value="{{ user_info[0]['Username'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">الجنس :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="gender"
+                value="{{ user_info[0]['Gender'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">الجامعة :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="university"
+                value="{{ user_info[0]['University'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">الكلية :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="college"
+                value="{{ user_info[0]['College'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">التخصص :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="major"
+                value="{{ user_info[0]['Major'] }}"
+              />
+            </div>
+            <div class="col mb-3">
+              <label class="mb-2">ايميل المرشد الأكاديمي :</label>
+              <input
+                type="text"
+                class="form-control"
+                name="academic_advisor_email"
+                value="{{ user_info[0]['Academic_advisor_email'] }}"
+              />
+            </div>
+            <div class="col mb-3 mt-5 w-100">
+              <button
+                type="button"
+                class="btn px-4 px-2 mx-1 mb-3"
+                id="editBtn"
+                style="background-color: #278a9f; color: #fff"
+              >
+                تعديل
+              </button>
+              <button
+                type="submit"
+                class="d-none btn btn-danger px-4 px-2 mx-1 mb-3"
+                id="saveBtn"
+                style="background-color: #c41616;"
+              >
+                حفظ
+              </button>
+              <a
+                type="button"
+                class="btn px-4 px-2 mx-1 mb-3"
+                style="background-color: #d9d9d9"
+                href="/home"
+                >الرجوع إلى الرئيسية</a
+              >
+            </div>
+          </form>
+        </div>
+      {% endif %}
+
+      </div>
+    </div>
+
+    <footer class="w-100 mt-5 navbar justify-content-center align-items-center">
+      <p class="m-0 text-center fw-semibold" style="font-size: 15px">
+        &copy; جميع الحقوق محفوظة - 2025
+      </p>
+    </footer>
+
+    <script src="/static/JS/bootstrap.bundle.min.js"></script>
+    <script src="/static/JS/popper.min.js"></script>
+    <script>
+      const editBtn = document.getElementById("editBtn");
+      const saveBtn = document.getElementById("saveBtn")
+      const input = document.querySelectorAll("form input");
+
+      input.forEach((ele) => {
+        ele.disabled = true;
+        ele.readonly = true;
+      });
+      saveBtn.classList.remove("d-inline-block");
+      saveBtn.classList.add("d-none");
+      editBtn.classList.remove("d-none");
+      editBtn.classList.add("d-inline-block");
+
+      editBtn.addEventListener("click", () => {
+        input.forEach((ele) => {
+          ele.disabled = false;
+          ele.readonly = false;
+        }); 
+        editBtn.classList.remove("d-inline-block");
+        editBtn.classList.add("d-none");
+        saveBtn.classList.remove("d-none");
+        saveBtn.classList.add("d-inline-block");
+      });
+    </script>
+  </body>
+</html>
