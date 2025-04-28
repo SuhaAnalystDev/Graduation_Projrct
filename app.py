@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, get_flashed_messages, jsonify
 import pymysql
+from dotenv import load_dotenv
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 import base64
@@ -17,15 +18,15 @@ from email.mime.multipart import MIMEMultipart
 from flask_wtf import CSRFProtect
 import google.generativeai as genai
 
-
 # API key
-api_key = "AIzaSyC_4Gtc5ijpc1hBJDWmTEFqw1Lqa21GayI"
+api_key = os.environ.get('API_KEY')
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
 # Set upload folder (optional)
 UPLOAD_FOLDER = 'Uploads_Image'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+load_dotenv()
 
 app = Flask(__name__)
 os.environ['FLASK_ENV'] = 'app'
@@ -41,11 +42,11 @@ EMAIL_PATTERN = re.compile(r"^[a-zA-Z0-9._%+-]+@taibahu\.edu\.sa$")
 def db_connection():
     try:
         conn = pymysql.connect(
-            host="ballast.proxy.rlwy.net",
-            user="root",
-            password="iHKuBEQMQGHRxLuyrWrSlJfkbkyGCAPq",
-            database="railway",
-            port=45179,
+            host=os.environ.get('DB_HOST'),
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD'),
+            database=os.environ.get('DB_NAME'),
+            port=int(os.environ.get('DB_PORT')),
             cursorclass=pymysql.cursors.DictCursor   
         )   
         return conn
@@ -55,7 +56,7 @@ def db_connection():
 
 def sendEmail(title, subject, message, email):
     me = "badeely.system@gmail.com" 
-    password = "omcm ygsi rklw gfzj" 
+    password = os.environ.get('EMAIL_PASSWORDE')
     to = email 
     try: 
         msg = MIMEMultipart()
