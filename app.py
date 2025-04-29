@@ -347,7 +347,7 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
                 <p>تم العثور على طالب تتطابق شُعبته مع طلبك في مقرر <strong>{course_name}</strong><br>
                 وقد تم إرسال الطلب إلى لجنة الإرشاد الأكاديمي لمراجعته واتخاذ القرار</p>
 
-                <p>بإمكانك متابعة حالة الطلب من خلال صفحة “الطلبات المقبولة” في حسابك</p>
+                <p>بإمكانك متابعة حالة الطلب من خلال صفحة “الطلبات” في حسابك</p>
 
                 <p>نتمنى لك كل التوفيق<br>
                 فريق بدّيلي</p>
@@ -470,7 +470,7 @@ def get_request_details_accepted_requests(request_id):
     cursor = conn.cursor()
 
     sql = """
-        SELECT * FROM matched_requests WHERE match_id = %s
+        SELECT * FROM accepted_requests WHERE match_id = %s
     """
 
     cursor.execute(sql, (request_id,))
@@ -1397,14 +1397,12 @@ def update_profile_ac():
         'الذكاء الاصطناعي وعلم البيانات' : 'Artificial Intelligence and Data Science'
     }
 
-    # academic_number = value_translation.get(request.form['academic_number'].strip(), request.form['academic_number'].strip())
     email = request.form['email'].strip()
     username = request.form['username'].strip()
     gender = value_translation.get(request.form['gender'].strip(), request.form['gender'].strip())
     university = value_translation.get(request.form['university'].strip(),request.form['university'].strip())
     college = value_translation.get(request.form['college'].strip(),request.form['college'].strip())
-    major = value_translation.get(request.form['department'].strip(), request.form['department'].strip())
-    # advisor_email = value_translation.get(request.form['academic_advisor_email'].strip() , request.form['academic_advisor_email'].strip())   
+    major = value_translation.get(request.form['department'].strip(), request.form['department'].strip())  
 
     email_ac = session['email_ac']
 
@@ -1460,10 +1458,10 @@ def updateRequestStatus():
     conn = db_connection()
     cursor = conn.cursor()
 
-    cursor.execute(""" SELECT course_name FROM matched_requests WHERE match_id = %s""", (request_id,))
+    cursor.execute(""" SELECT course_name FROM accepted_requests WHERE match_id = %s""", (request_id,))
     course_name = cursor.fetchone()
 
-    cursor.execute("""SELECT student1_id, student2_id, student3_id, student4_id, student5_id FROM matched_requests WHERE match_id = %s""", (request_id,))
+    cursor.execute("""SELECT student1_id, student2_id, student3_id, student4_id, student5_id FROM accepted_requests WHERE match_id = %s""", (request_id,))
 
     student_ids_data = cursor.fetchone()  
 
@@ -1476,6 +1474,30 @@ def updateRequestStatus():
 
     emails_data = cursor.fetchall()
     student_emails = [row['Email'] for row in emails_data]
+
+    cursor.execute("""
+        SELECT course_id, course_number,
+            student1_id, desired_section_1, 
+            student2_id, desired_section_2, 
+            student3_id, desired_section_3, 
+            student4_id, desired_section_4, 
+            student5_id, desired_section_5 
+        FROM accepted_requests 
+        WHERE match_id = %s
+    """, (request_id,))
+
+    row = cursor.fetchone()
+
+    course_id = row[0]
+    course_number = row[1]
+
+    students = [
+        (row[2], row[3]),  # student1
+        (row[4], row[5]),  # student2
+        (row[6], row[7]),  # student3
+        (row[8], row[9]),  # student4
+        (row[10], row[11])  # student5
+    ]
 
     title = ""
     msg = ""
@@ -1499,6 +1521,29 @@ def updateRequestStatus():
         </body>
         </html>
         """
+        for student_id, desired_section in students:
+            if student_id and desired_section:
+                cursor.execute("""
+                    SELECT Sunday, Monday, Tuesday, Wednesday, Thursday
+                    FROM time_schedule 
+                    WHERE Section = %s AND Course_ID = %s AND Course_Number = %s
+                """, (desired_section, course_id, course_number))
+                
+                section_info = cursor.fetchone()
+                if section_info:
+                    sunday, monday, tuesday, wednesday, thursday = section_info
+
+                    cursor.execute("""
+                        UPDATE student_schedules
+                        SET Section = %s,
+                            Sunday = %s 
+                            Monday = %s  
+                            Tuesday = %s  
+                            Wednesday = %s  
+                            Thursday = %s 
+                        WHERE Student_ID = %s AND Course_ID = %s AND Course_Number = %s
+                    """, (desired_section, sunday, monday, tuesday, wednesday, thursday, student_id, course_id, course_number))
+                    conn.commit()        
     else : 
         title = "رسالة إشعار برفض الطلب"
         subject = "نتأسف، لم يتم قبول طلبك"
@@ -1519,7 +1564,7 @@ def updateRequestStatus():
 
 
     cursor.execute("""
-        UPDATE matched_requests SET status = %s, note = %s WHERE match_id = %s
+        UPDATE accepted_requests SET status = %s, note = %s WHERE match_id = %s
     """, (status, note, request_id))
     conn.commit()
 
