@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>طلب تبديل شعبة</title>
-    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/CSS/style.css" />
     <script type="module" src="/static/JS/main.js"></script>
   </head>
@@ -601,6 +601,10 @@
 
       function displyCurrentSection() {
         const selectedValue = course_id.value;
+        spinner.classList.remove("d-none");
+        spinner.classList.add("d-flex");
+        card.classList.add("d-none");
+        card.classList.remove("d-flex");
 
         fetch("/get_course_section", {
           method: "POST",
@@ -611,6 +615,12 @@
         })
           .then((response) => response.json())
           .then((data) => {
+            setTimeout(() => {
+              spinner.classList.remove("d-none");
+              spinner.classList.add("d-flex");
+              card.classList.add("d-none");
+              card.classList.remove("d-flex");              
+            }, 1000);
             current_section.value = data.currentSection;
             desired_section.innerHTML = "";
             if (data.desiredSection) {
@@ -640,10 +650,8 @@
           );
           modal.hide();
 
-          // Show spinner immediately
           spinner.classList.remove("d-none");
           spinner.classList.add("d-flex");
-
           card.classList.add("d-none");
           card.classList.remove("d-flex");
           alertDiv.classList.add("d-block");
@@ -699,92 +707,11 @@
           function restoreUI() {
             spinner.classList.add("d-none");
             spinner.classList.remove("d-flex");
-
             card.classList.remove("d-none");
             card.classList.add("d-flex");
-
             submitBtn.disabled = false;
           }
         });
-
-      // submitBtn.addEventListener("click", function (event) {
-      //   event.preventDefault();
-
-      //   // Show spinner immediately
-      //   spinner.classList.remove("d-none");
-      //   spinner.classList.add("d-flex");
-
-      //   card.classList.add("d-none");
-      //   card.classList.remove("d-flex");
-
-      //   submitBtn.disabled = true;
-
-      //   const selectionData = {
-      //     course_id: course_id.value,
-      //     current_section: current_section.value,
-      //     desired_section: desired_section.value,
-      //   };
-
-      //   fetch("/submit_request", {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({ request_info: selectionData }),
-      //   })
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       let isSuccess = false;
-
-      //       if (data.alert) {
-      //         data.alert.forEach(([category, message]) => {
-      //           const alertHTML = `
-      //       <div class="alert alert-${category} alert-dismissible fade show m-0" role="alert">
-      //         ${message}
-      //         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      //       </div>
-      //     `;
-      //           alertDiv.innerHTML += alertHTML;
-
-      //           if (category === "success") isSuccess = true;
-      //         });
-
-      //         setTimeout(() => {
-      //           alertDiv.classList.add("d-none");
-      //         }, 800);
-      //       }
-
-      //       if (isSuccess) {
-      //         setTimeout(() => {
-      //           window.location.href = redirectURL;
-      //         }, 1000);
-      //       } else {
-      //         restoreUI();
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error:", error);
-      //       restoreUI();
-      //     });
-
-      //   function restoreUI() {
-      //     spinner.classList.add("d-none");
-      //     spinner.classList.remove("d-flex");
-
-      //     card.classList.remove("d-none");
-      //     card.classList.add("d-flex");
-
-      //     submitBtn.disabled = false;
-      //   }
-      // });
-
-      // setTimeout(() => {
-      //   const alertDiv = document.querySelector('#alert_div .alert');
-      //   if (alertDiv) {
-      //     alertDiv.classList.remove('show'); // Hide the alert by removing 'show'
-      //   }
-      //   if (data.alert.some(([category]) => category === 'success')) {
-      //     window.location.href = '/requests_page';
-      //   }
-      // }, 3500);
     </script>
   </body>
 </html>

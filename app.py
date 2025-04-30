@@ -230,141 +230,148 @@ def check_request_exists(student_id, course_id, course_number):
     return isExists
 
 def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
-    try:  
+    try:
         conn = db_connection()
         cursor = conn.cursor()
 
-        student_emails = []
-
         query = """
-            SELECT rs.Academic_Number, rs.Course_ID, rs.Course_Number, rs.Course_Name, rs.Current_Section, rs.Desired_Section, rs.Academic_advisor_email 
+            SELECT rs.Academic_Number, rs.Course_ID, rs.Course_Number, rs.Course_Name,
+                   rs.Current_Section, rs.Desired_Section, rs.Academic_advisor_email 
             FROM requests_schedule rs
             WHERE rs.Course_ID = %s 
-            AND rs.Course_Number = %s 
-            AND rs.Status = 'pending' 
-            AND rs.Academic_Number IN (
-                SELECT u.Academic_Number FROM users u 
-                WHERE u.Major = %s AND u.Gender = %s
-            )
+              AND rs.Course_Number = %s 
+              AND rs.Status = 'pending' 
+              AND rs.Academic_Number IN (
+                  SELECT u.Academic_Number FROM users u 
+                  WHERE u.Major = %s AND u.Gender = %s
+              )
         """
         cursor.execute(query, (course_id, course_number, major, gender))
-        
         requests_schedule = cursor.fetchall()
 
-        query_1 = """
-            SELECT Username, Email
-            FROM users 
+        cursor.execute("""
+            SELECT Username, Email FROM users 
             WHERE User_type = 'Advisor' AND Major = %s AND Gender = %s AND Branch = %s
-        """
-        cursor.execute(query_1, (major, gender, branch))
+        """, (major, gender, branch))
+        committee_info = cursor.fetchone()
 
-        advising_committee_info = cursor.fetchone()
-
-        if advising_committee_info:
-            advisory_committee_name, advisory_committee_email = advising_committee_info
-        else:
-            advisory_committee_name = None
-            advisory_committee_email = None
-
+        advisory_committee_name = committee_info['Username'] if committee_info else None
+        advisory_committee_email = committee_info['Email'] if committee_info else None
 
         request_map = {}
+        student_info = {}
 
-        for student_id, course_id, course_number, course_name, current_section_section, desired_section, advisor_email in requests_schedule:
-            key = (course_id, course_number, course_name)
-            if key not in request_map:
-                request_map[key] = {}
-            request_map[key][current_section_section] = (student_id, desired_section, advisor_email)
-        
+        for request in requests_schedule:
+            student_id = request['Academic_Number']
+            current_section = request['Current_Section']
+            desired_section = request['Desired_Section']
+            advisor_email = request['Academic_advisor_email']
+            student_info[student_id] = (request['Course_ID'], request['Course_Number'], request['Course_Name'],
+                                 current_section, desired_section, advisor_email)
 
-        successful_swaps = []
-        visited = set()
+            if current_section not in request_map:
+                request_map[current_section] = []
+            request_map[current_section].append((desired_section, student_id))
 
-        for (course_id, course_number, course_name), section_map in request_map.items():
-            for start_section in list(section_map.keys()):
-                if start_section in visited:
+        print(request_map)
+        visited_students = []
+
+        for init_section in request_map:
+            for desired_section1, student_id1 in request_map[init_section]:
+                if student_id1 in visited_students:
                     continue
 
-                # Detect circular swaps
-                cycles = []
-                current_section = start_section
+                for desired_section2, student_id2 in request_map.get(desired_section1, []):
+                    if student_id2 in visited_students or student_id2 == student_id1:
+                        continue
 
-                while current_section in section_map and current_section not in [cycle[4] for cycle in cycles]: 
-                    student_id, desired_section, advisor_email = section_map[current_section]
-                    cycles.append((student_id, course_id, course_number, course_name, current_section, desired_section, advisor_email))
-                    current_section = desired_section
+                    for desired_section3, student_id3 in request_map.get(desired_section2, []):
+                        if student_id3 in visited_students or student_id3 in [student_id1, student_id2]:
+                            continue
 
-                if 2 <= len(cycles) <= 5 and cycles[0][4] == current_section:
-                    successful_swaps.append(cycles)
-                    visited.update([cycle[4] for cycle in cycles])
+                        for desired_section4, student_id4 in request_map.get(desired_section3, []):
+                            if student_id4 in visited_students or student_id4 in [student_id1, student_id2, student_id3]:
+                                continue
 
-                    matching_students = []
-                    for student_data in cycles:
-                        matching_students.extend([student_data[0], student_data[4], student_data[5], student_data[6]])
+                            for desired_section5, student_id5 in request_map.get(desired_section4, []):
+                                if student_id5 in visited_students or student_id5 in [student_id1, student_id2, student_id3, student_id4]:
+                                    continue
+                                if desired_section5 == init_section:
+                                    cycle = [student_id1, student_id2, student_id3, student_id4, student_id5]
+                                    break
+                            else:
+                                cycle = None
+                                if desired_section4 == init_section:
+                                    cycle = [student_id1, student_id2, student_id3, student_id4]
+                                elif desired_section3 == init_section:
+                                    cycle = [student_id1, student_id2, student_id3]
+                                elif desired_section2 == init_section:
+                                    cycle = [student_id1, student_id2]
 
-                    while len(matching_students) < 5 * 4: 
-                        matching_students.append(None)
+                            if cycle and len(cycle) >= 2:
+                                visited_students.extend(cycle)
+                                matching_students = []
+                                student_ids = []
 
-                    matching_students.extend([course_id, course_number, course_name, advisory_committee_name, advisory_committee_email, gender, major])
-                    
+                                for stu_id in cycle:
+                                    cour_id, cour_num, cour_name, cur_section, des_section, adv_email = student_info[stu_id]
+                                    matching_students.extend([stu_id, cur_section, des_section, adv_email])
+                                    student_ids.append(stu_id)
 
-                    query_3 = """
-                        SELECT Email FROM users 
-                        WHERE academic_number IN ({})
-                    """
-                    cursor.execute(query_3.format(', '.join(['%s'] * len(cycles))), tuple([student[0] for student in cycles]))
-                    emalis_list = cursor.fetchall()
-                    student_emails = [email[0] for email in emalis_list]              
+                                while len(matching_students) < 20:
+                                    matching_students.append(None)
 
-                    sql = """
-                    INSERT INTO accepted_requests (student1_id, current_section_1, desired_section_1, 
-                                                academic_advisor_email_1, student2_id, current_section_2, desired_section_2,
-                                                academic_advisor_email_2, student3_id, current_section_3, desired_section_3, 
-                                                academic_advisor_email_3, student4_id, current_section_4, desired_section_4, 
-                                                academic_advisor_email_4, student5_id, current_section_5, desired_section_5, 
-                                                academic_advisor_email_5, course_id, course_number, course_name, advisory_committee_name, 
-                                                advisory_committee_email, gender, department) 
-                        VALUES ({})
-                    """.format(', '.join(['%s'] * (len(matching_students))))
-                    
-                    cursor.execute(sql, matching_students)
-                    
-                    # Remove matched students from requests_schedule
-                    delete_query = """
-                        DELETE FROM requests_schedule 
-                        WHERE academic_number IN ({})
-                    """
-                    cursor.execute(delete_query.format(', '.join(['%s'] * len(cycles))), tuple([student[0] for student in cycles]))
+                                matching_students.extend([ cour_id, cour_num, cour_name,
+                                    advisory_committee_name, advisory_committee_email, gender, major
+                                ])
 
+                                print("تم العثور على دورة:", matching_students)
+                                print("عدد القيم:", len(matching_students))
+                                print("قيم الإدخال:", matching_students)
 
-        course_name = requests_schedule[0][3]  
-        title = "رسالة إشعار بوجود طلب تبادل مناسب"
-        subject = "تم العثور على طلب تبادل متطابق لك"
-        msg = f""" 
-            <html>
-            <body dir="rtl" style="font-family: Arial; text-align: right; color: #000;">
-                <p>مرحبًا،</p>
+                                sql = """
+                                    INSERT INTO accepted_requests (
+                                        student1_id, current_section_1, desired_section_1, academic_advisor_email_1,
+                                        student2_id, current_section_2, desired_section_2, academic_advisor_email_2,
+                                        student3_id, current_section_3, desired_section_3, academic_advisor_email_3,
+                                        student4_id, current_section_4, desired_section_4, academic_advisor_email_4,
+                                        student5_id, current_section_5, desired_section_5, academic_advisor_email_5,
+                                        course_id, course_number, course_name, advisory_committee_name,
+                                        advisory_committee_email, gender, department
+                                    ) VALUES ({})
+                                """.format(', '.join(['%s'] * len(matching_students)))
+                                cursor.execute(sql, matching_students)
 
-                <p>تم العثور على طالب تتطابق شُعبته مع طلبك في مقرر <strong>{course_name}</strong><br>
-                وقد تم إرسال الطلب إلى لجنة الإرشاد الأكاديمي لمراجعته واتخاذ القرار</p>
+                                delete_sql = """
+                                    DELETE FROM requests_schedule
+                                    WHERE academic_number IN ({})
+                                """.format(', '.join(['%s'] * len(student_ids)))
+                                cursor.execute(delete_sql, student_ids)
 
-                <p>بإمكانك متابعة حالة الطلب من خلال صفحة “الطلبات” في حسابك</p>
+                                # Send Email
+                                cursor.execute("""
+                                    SELECT Email FROM users WHERE academic_number IN ({})
+                                """.format(', '.join(['%s'] * len(student_ids))), student_ids)
+                                emails = [r['Email'] for r in cursor.fetchall()]
+                                title = "رسالة إشعار بوجود طلب تبادل مناسب"
+                                subject = "تم العثور على طلب تبادل متطابق لك"
+                                msg = f"""
+                                    <html><body dir="rtl" style="font-family: Arial;">
+                                    <p>مرحبًا،</p>
+                                    <p>تم العثور على طلب تبادل مناسب في مقرر <strong>{student_info[student_ids[0]][2]}</strong>.
+                                    الطلب الآن قيد المراجعة لدى لجنة الإرشاد الأكاديمي.</p>
+                                    <p>بإمكانك متابعة حالة الطلب من حسابك.</p>
+                                    <p>فريق بدّيلي</p>
+                                    </body></html>
+                                """
+                                sendEmail(title, subject, msg, emails)
 
-                <p>نتمنى لك كل التوفيق<br>
-                فريق بدّيلي</p>
-            </body>
-            </html>   
-        """          
-        if(student_emails):
-            sendEmail(title, subject, msg, student_emails)
-
-    except pymysql.MySQLError as err:
-        print(f"Database error sub: {err}")
-        return jsonify({'error': 'Database error', 'message': str(err)}), 500
-    except Exception as e:
-        print(f"Unexpected error sub: {e}")
-        return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500            
-    finally:
         conn.commit()
+    except pymysql.MySQLError as err:
+        print(f"Database error f: {err}")
+    except Exception as e:
+        print(f"Unexpected error f: {e}")
+    finally:
         cursor.close()
         conn.close()
 
