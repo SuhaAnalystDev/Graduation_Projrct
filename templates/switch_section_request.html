@@ -597,10 +597,6 @@
 
       function displyCurrentSection() {
         const selectedValue = course_id.value;
-        spinner.classList.remove("d-none");
-        spinner.classList.add("d-flex");
-        card.classList.add("d-none");
-        card.classList.remove("d-flex");
 
         fetch("/get_course_section", {
           method: "POST",
