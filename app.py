@@ -1144,7 +1144,8 @@ def submit():
             cur.close()
             conn.close()
     
-    
+        
+        
         title = "رسالة تأكيد تقديم الطلب"
         subject = "تم استلام طلبك بنجاح"
         msg = f""" 
@@ -1158,9 +1159,8 @@ def submit():
             </html>        
         """
         email = [result['Email']]
-        sendEmail(title, subject, msg, email) 
-
         filterRequests(course_id, course_number, session['major'], session['gender'])
+        sendEmail(title, subject, msg, email) 
         flash('لقد تم تقديم طلبك بنجاح!', 'success')
         messages = get_flashed_messages(with_categories=True)  
 
