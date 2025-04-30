@@ -595,10 +595,6 @@
       const alertDiv = document.getElementById("alert_div");
       alertDiv.innerHTML = "";
 
-      // container.classList.remove("invisible");
-      // container.classList.add("visible");
-      // spinner.classList.add("d-none");
-
       function displyCurrentSection() {
         const selectedValue = course_id.value;
         spinner.classList.remove("d-none");
@@ -615,12 +611,6 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            setTimeout(() => {
-              spinner.classList.remove("d-none");
-              spinner.classList.add("d-flex");
-              card.classList.add("d-none");
-              card.classList.remove("d-flex");              
-            }, 1000);
             current_section.value = data.currentSection;
             desired_section.innerHTML = "";
             if (data.desiredSection) {
