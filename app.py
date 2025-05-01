@@ -7,6 +7,8 @@ import base64
 import mimetypes
 import os
 import mdpd
+import random
+import string
 import pandas as pd
 from io import StringIO
 import shutil
@@ -275,96 +277,122 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
 
         print(request_map)
         visited_students = []
+        student_ids = []
 
-        for init_section in request_map:
-            for desired_section1, student_id1 in request_map[init_section]:
-                if student_id1 in visited_students:
-                    continue
+        found_cycle = True
+        all_emails_to_notify = []
+        course_names = []
 
-                for desired_section2, student_id2 in request_map.get(desired_section1, []):
-                    if student_id2 in visited_students or student_id2 == student_id1:
+        while found_cycle:
+            found_cycle = False
+
+            for start_section in request_map:
+                for desired_section1, student_id1 in request_map[start_section]:
+                    if student_id1 in visited_students:
                         continue
 
-                    for desired_section3, student_id3 in request_map.get(desired_section2, []):
-                        if student_id3 in visited_students or student_id3 in [student_id1, student_id2]:
+                    for desired_section2, student_id2 in request_map.get(desired_section1, []):
+                        if student_id2 in visited_students or student_id2 == student_id1:
                             continue
 
-                        for desired_section4, student_id4 in request_map.get(desired_section3, []):
-                            if student_id4 in visited_students or student_id4 in [student_id1, student_id2, student_id3]:
-                                continue
-
-                            for desired_section5, student_id5 in request_map.get(desired_section4, []):
-                                if student_id5 in visited_students or student_id5 in [student_id1, student_id2, student_id3, student_id4]:
+                        # Check 2-student cycle
+                        if desired_section2 == start_section:
+                            cycle = [student_id1, student_id2]
+                        else:
+                            cycle = None
+                            for desired_section3, student_id3 in request_map.get(desired_section2, []):
+                                if student_id3 in visited_students or student_id3 in [student_id1, student_id2]:
                                     continue
-                                if desired_section5 == init_section:
-                                    cycle = [student_id1, student_id2, student_id3, student_id4, student_id5]
-                                    break
-                            else:
-                                cycle = None
-                                if desired_section4 == init_section:
-                                    cycle = [student_id1, student_id2, student_id3, student_id4]
-                                elif desired_section3 == init_section:
+
+                                # Check 3-student cycle
+                                if desired_section3 == start_section:
                                     cycle = [student_id1, student_id2, student_id3]
-                                elif desired_section2 == init_section:
-                                    cycle = [student_id1, student_id2]
+                                else:
+                                    for desired_section4, student_id4 in request_map.get(desired_section3, []):
+                                        if student_id4 in visited_students or student_id4 in [student_id1, student_id2, student_id3]:
+                                            continue
 
-                            if cycle and len(cycle) >= 2:
-                                visited_students.extend(cycle)
-                                matching_students = []
-                                student_ids = []
+                                        # Check 4-student cycle
+                                        if desired_section4 == start_section:
+                                            cycle = [student_id1, student_id2, student_id3, student_id4]
+                                        else:
+                                            for desired_section5, student_id5 in request_map.get(desired_section4, []):
+                                                if student_id5 in visited_students or student_id5 in [student_id1, student_id2, student_id3, student_id4]:
+                                                    continue
 
-                                for stu_id in cycle:
-                                    cour_id, cour_num, cour_name, cur_section, des_section, adv_email = student_info[stu_id]
-                                    matching_students.extend([stu_id, cur_section, des_section, adv_email])
-                                    student_ids.append(stu_id)
+                                                # Check 5-student cycle
+                                                if desired_section5 == start_section:
+                                                    cycle = [student_id1, student_id2, student_id3, student_id4, student_id5]
 
-                                while len(matching_students) < 20:
-                                    matching_students.append(None)
+                        if cycle and len(cycle) >= 2:
+                            found_cycle = True
+                            visited_students.extend(cycle)
+                            matching_students = []
+                            student_ids = []
 
-                                matching_students.extend([ cour_id, cour_num, cour_name,
-                                    advisory_committee_name, advisory_committee_email, gender, major
-                                ])
+                            for student_id in cycle:
+                                c_id, c_num, c_name, cur_section, des_section, adv_email = student_info[student_id]
+                                matching_students.extend([student_id, cur_section, des_section, adv_email])
+                                student_ids.append(student_id)
 
-                                print("تم العثور على دورة:", matching_students)
-                                print("عدد القيم:", len(matching_students))
-                                print("قيم الإدخال:", matching_students)
+                            while len(matching_students) < 20:
+                                matching_students.append(None)
 
-                                sql = """
-                                    INSERT INTO accepted_requests (
-                                        student1_id, current_section_1, desired_section_1, academic_advisor_email_1,
-                                        student2_id, current_section_2, desired_section_2, academic_advisor_email_2,
-                                        student3_id, current_section_3, desired_section_3, academic_advisor_email_3,
-                                        student4_id, current_section_4, desired_section_4, academic_advisor_email_4,
-                                        student5_id, current_section_5, desired_section_5, academic_advisor_email_5,
-                                        course_id, course_number, course_name, advisory_committee_name,
-                                        advisory_committee_email, gender, department
-                                    ) VALUES ({})
-                                """.format(', '.join(['%s'] * len(matching_students)))
-                                cursor.execute(sql, matching_students)
+                            matching_students.extend([
+                                c_id, c_num, c_name,
+                                advisory_committee_name,
+                                advisory_committee_email,
+                                gender,
+                                major
+                            ])
 
-                                delete_sql = """
-                                    DELETE FROM requests_schedule
-                                    WHERE academic_number IN ({})
-                                """.format(', '.join(['%s'] * len(student_ids)))
-                                cursor.execute(delete_sql, student_ids)
+                            print("تم العثور على دورة:", matching_students)
 
-                                # Send Email
+                            sql = """
+                                INSERT INTO accepted_requests (
+                                    student1_id, current_section_1, desired_section_1, academic_advisor_email_1,
+                                    student2_id, current_section_2, desired_section_2, academic_advisor_email_2,
+                                    student3_id, current_section_3, desired_section_3, academic_advisor_email_3,
+                                    student4_id, current_section_4, desired_section_4, academic_advisor_email_4,
+                                    student5_id, current_section_5, desired_section_5, academic_advisor_email_5,
+                                    course_id, course_number, course_name, advisory_committee_name,
+                                    advisory_committee_email, gender, department
+                                ) VALUES ({})
+                            """.format(', '.join(['%s'] * len(matching_students)))
+                            cursor.execute(sql, matching_students)
+
+                            delete_sql = """
+                                DELETE FROM requests_schedule WHERE academic_number IN ({})
+                            """.format(', '.join(['%s'] * len(student_ids)))
+                            cursor.execute(delete_sql, student_ids)
+
+                            if student_ids:
                                 cursor.execute("""
                                     SELECT Email FROM users WHERE academic_number IN ({})
                                 """.format(', '.join(['%s'] * len(student_ids))), student_ids)
                                 emails = [r['Email'] for r in cursor.fetchall()]
-                                title = "رسالة إشعار بوجود طلب تبادل مناسب"
-                                subject = "تم العثور على طلب تبادل متطابق لك"
-                                msg = f"""
-                                    <html><body dir="rtl" style="font-family: Arial;">
-                                    <p>مرحبًا،</p>
-                                    <p>تم العثور على طلب تبادل مناسب في مقرر <strong>{student_info[student_ids[0]][2]}</strong>.
-                                    الطلب الآن قيد المراجعة لدى لجنة الإرشاد الأكاديمي.</p>
-                                    <p>بإمكانك متابعة حالة الطلب من حسابك.</p>
-                                    <p>فريق بدّيلي</p>
-                                    </body></html>
-                                """
-                                sendEmail(title, subject, msg, emails)
+
+                                all_emails_to_notify.append(emails)
+                                course_names.append(c_name)
+
+        # Send all emails after cycles are processed
+
+        title = "رسالة إشعار بوجود طلب تبادل مناسب"
+        subject = "تم العثور على طلب تبادل متطابق لك"
+
+        for emails, course_name in zip(all_emails_to_notify, course_names):
+            msg = f""" 
+                <html>
+                <body dir=\"rtl\" style=\"font-family: Arial; text-align: right; color: #000;\">
+                    <p>مرحبًا،</p>
+                    <p>تم العثور على طالب تتطابق شُعبته مع طلبك في مقرر <strong>{course_name}</strong><br>
+                    وقد تم إرسال الطلب إلى لجنة الإرشاد الأكاديمي لمراجعته واتخاذ القرار</p>
+                    <p>بإمكانك متابعة حالة الطلب من خلال صفحة “الطلبات” في حسابك</p>
+                    <p>نتمنى لك كل التوفيق<br>
+                    فريق بدّيلي</p>
+                </body>
+                </html>   
+            """
 
         conn.commit()
     except pymysql.MySQLError as err:
@@ -374,7 +402,7 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
     finally:
         cursor.close()
         conn.close()
-
+        
 def get_status_from_db(student_id):
     try:
         conn = db_connection()
@@ -1290,7 +1318,7 @@ def register_ac():
 
     if request.method == 'POST':
         conn = db_connection()
-        cur = conn.cursor()
+        cursor = conn.cursor()
 
         try:
             email = request.form['email'].strip()
@@ -1306,30 +1334,33 @@ def register_ac():
             # Email validation
             if not EMAIL_PATTERN.match(email):
                 message = "تنسيق البريد الإلكتروني غير صالح يجب ان ينتهي @taibahu.edu.sa"
-                category = "danger"                
+                category = "danger"           
+                     
 
             # Password match validation
             if password != confirm_password:
                 message = "كلمة المرور غير متطابقة!"
-                category = "danger"                
+                category = "danger" 
+                return               
 
             # Check if email already exists
-            query_1 = "SELECT * FROM users WHERE email = %s"
-            cur.execute(query_1, (email,))
-            if cur.fetchone():
+            query_1 = "SELECT * FROM users WHERE Email = %s"
+            cursor.execute(query_1, (email,))
+            if cursor.fetchone():
                 message = "البريد الإلكتروني موجود بالفعل!"
                 category = "danger" 
+                return
 
             # Hash password
             hashed_password = generate_password_hash(password)
+            unique_id = ''.join(random.choices(string.digits, k=8))
 
-            # Insert new user
-            query_2 = """ 
-                INSERT INTO users 
-                (User_type, Email, Username, Gender, University, College, Major, Branch, Password) 
-                VALUES ('Advisor', %s, %s, %s, %s, %s, %s, %s) 
+            query_2 = """
+            INSERT INTO users 
+            (User_type, Email, Username, Gender, College, University, Major, Branch, Password) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """
-            cur.execute(query_2, (email, username, gender, university_name, college, major, branch, hashed_password))
+            cursor.execute(query_2, ('Advisor', email, username, gender, college, university_name, major, branch, hashed_password))
             conn.commit()
 
             session['username'] = username
@@ -1342,7 +1373,7 @@ def register_ac():
             url =  url_for('home_ac')
 
         finally:
-            cur.close()
+            cursor.close()
             conn.close()
 
     return render_template('register_ac.html', message=message, category=category, url=url)
