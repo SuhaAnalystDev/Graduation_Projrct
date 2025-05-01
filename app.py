@@ -1591,19 +1591,22 @@ def updateRequestStatus():
 @app.route("/dashboard", endpoint = "dashboard")
 def dashboard():
     conn = db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
 
     cursor.execute("SELECT COUNT(*) As count FROM users WHERE User_Type = 'Student'")
     students_count = cursor.fetchone()
+    print(students_count)
 
-    cursor.execute("SELECT COUNT(*) As count FROM users WHERE User_Type = 'Adivsor'")
+    cursor.execute("SELECT COUNT(*) As count FROM users WHERE User_type = 'Advisor'")
     advisors_count = cursor.fetchone()
+    print(advisors_count)
 
     cursor.execute("SELECT COUNT(*) As count FROM requests_schedule")
     requests_count = cursor.fetchone()
 
     cursor.execute("SELECT COUNT(*) As count FROM accepted_requests")
     accepted_requests_count = cursor.fetchone()
+    print(accepted_requests_count)
 
     query = """
         SELECT 
