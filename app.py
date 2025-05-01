@@ -280,8 +280,8 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
         student_ids = []
 
         found_cycle = True
-        all_emails_to_notify = []
-        course_names = []
+        get_student_emails = []
+        get_course_name = ""
 
         while found_cycle:
             found_cycle = False
@@ -371,21 +371,18 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
                                     SELECT Email FROM users WHERE academic_number IN ({})
                                 """.format(', '.join(['%s'] * len(student_ids))), student_ids)
                                 emails = [r['Email'] for r in cursor.fetchall()]
+                                print(emails)
 
-                                all_emails_to_notify.append(emails)
-                                course_names.append(c_name)
-
-        # Send all emails after cycles are processed
+                                get_student_emails = emails
+                                get_course_name = c_name 
 
         title = "رسالة إشعار بوجود طلب تبادل مناسب"
         subject = "تم العثور على طلب تبادل متطابق لك"
-
-        for emails, course_name in zip(all_emails_to_notify, course_names):
-            msg = f""" 
+        msg = f""" 
                 <html>
                 <body dir=\"rtl\" style=\"font-family: Arial; text-align: right; color: #000;\">
                     <p>مرحبًا،</p>
-                    <p>تم العثور على طالب تتطابق شُعبته مع طلبك في مقرر <strong>{course_name}</strong><br>
+                    <p>تم العثور على طالب تتطابق شُعبته مع طلبك في مقرر <strong>{get_course_name}</strong><br>
                     وقد تم إرسال الطلب إلى لجنة الإرشاد الأكاديمي لمراجعته واتخاذ القرار</p>
                     <p>بإمكانك متابعة حالة الطلب من خلال صفحة “الطلبات” في حسابك</p>
                     <p>نتمنى لك كل التوفيق<br>
@@ -393,8 +390,11 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
                 </body>
                 </html>   
             """
+        if(get_student_emails):
+            sendEmail(title, subject, msg, get_student_emails)
 
         conn.commit()
+        return found_cycle
     except pymysql.MySQLError as err:
         print(f"Database error f: {err}")
     except Exception as e:
@@ -402,7 +402,6 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
     finally:
         cursor.close()
         conn.close()
-        
 def get_status_from_db(student_id):
     try:
         conn = db_connection()
@@ -1194,8 +1193,14 @@ def submit():
             </html>        
         """
         email = [result['Email']]
-        filterRequests(course_id, course_number, session['major'], session['gender'])
         sendEmail(title, subject, msg, email) 
+
+        successful_cycles = filterRequests(course_id, course_number, session['major'], session['gender'])
+
+        if(successful_cycles == False):
+            return
+            
+
         flash('لقد تم تقديم طلبك بنجاح!', 'success')
         messages = get_flashed_messages(with_categories=True)  
 
