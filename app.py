@@ -357,9 +357,7 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
         print(f"Database error: {err}")
     except Exception as e:
         print(f"Unexpected error: {e}")
-    finally:
-        cursor.close()
-        conn.close()
+
 
 def get_status_from_db(student_id):
     try:
