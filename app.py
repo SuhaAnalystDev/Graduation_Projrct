@@ -1079,10 +1079,7 @@ def save_table():
         return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500
 
 @app.route('/delete_student_schedule', methods=['GET', 'POST'])
-def deleteStudentSchedule():
-    message = None
-    category = None
-        # url = None     
+def deleteStudentSchedule():  
     if request.method == 'POST':
         student_id = session['academic_number']
 

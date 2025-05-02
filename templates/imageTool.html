@@ -248,11 +248,12 @@
 
     }
 
-    const edit = "{{ edit }}"; // Flask template variable
-    document.querySelector('.modal').style.display = 'none';
-
-    if (edit === 'True') {
-        document.querySelector('.modal').style.display = 'block';
+    const edit = "{{ edit | string | lower }}";
+    const modal = document.querySelector('.modal');
+    if (edit === 'true') {
+        modal.style.display = 'block';
+    } else {
+        modal.style.display = 'none';
     }
 
     function deleteStudentScheduleFromDB(btn){
