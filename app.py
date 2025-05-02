@@ -402,6 +402,7 @@ def filterRequests(course_id, course_number, major, gender, branch='Madinah'):
     finally:
         cursor.close()
         conn.close()
+
 def get_status_from_db(student_id):
     try:
         conn = db_connection()
@@ -880,18 +881,21 @@ def register():
             if not EMAIL_PATTERN.match(email):
                 message = "تنسيق البريد الإلكتروني غير صالح يجب ان ينتهي @taibahu.edu.sa"
                 category = "danger"
+                return render_template("register.html", message=message, category=category)
 
             # Password match validation
             if password != confirm_password:
                 message = "كلمة المرور غير متطابقة!"
                 category = "danger"
+                return render_template("register.html", message=message, category=category)
 
             # Check if email already exists
             query_1 = "SELECT * FROM users WHERE email = %s"
             cur.execute(query_1, (email,))
             if cur.fetchone():
                 message = "البريد الإلكتروني موجود بالفعل!"
-                category = "danger"                
+                category = "danger" 
+                return render_template("register.html", message=message, category=category)              
 
             # Hash password
             hashed_password = generate_password_hash(password)
@@ -1175,8 +1179,6 @@ def submit():
             """
             cur.execute(insert_query, (student_id, course_id, course_number, course_name, current_section, desired_section, advisor_email))
             conn.commit()
-            cur.close()
-            conn.close()
     
         
         
@@ -1193,12 +1195,14 @@ def submit():
             </html>        
         """
         email = [result['Email']]
-        sendEmail(title, subject, msg, email) 
 
-        successful_cycles = filterRequests(course_id, course_number, session['major'], session['gender'])
+        # successful_cycles = filterRequests(course_id, course_number, session['major'], session['gender'])
 
-        if(successful_cycles == False):
-            return
+        # if(successful_cycles == False):
+        #     return
+        if cur.rowcount == 0:
+            sendEmail(title, subject, msg, email) 
+            filterRequests(course_id, course_number, session['major'], session['gender'])
             
 
         flash('لقد تم تقديم طلبك بنجاح!', 'success')
@@ -1213,6 +1217,9 @@ def submit():
     except Exception as e:
         print(f"Unexpected error sub: {e}")
         return jsonify({'error': 'Unexpected error', 'message': str(e)}), 500
+    finally:
+        cur.close()
+        conn.close()
 
 @app.route('/get_status')
 def get_status():
