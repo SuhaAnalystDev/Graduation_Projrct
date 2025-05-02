@@ -756,7 +756,7 @@ def registerPage():
 
 @app.route('/imageTool_page', endpoint='imageTool_page')
 def imageToolPage():
-    edit = request.args.get('edit')
+    edit = request.args.get('edit')  == 'True'
     return render_template('imageTool.html', edit=edit)
 
 @app.route('/home', endpoint= 'home')
