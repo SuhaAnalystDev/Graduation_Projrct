@@ -1194,8 +1194,11 @@ def submit():
         email = [result['Email']]
 
         sendEmail(title, subject, msg, email) 
+
+        major = session.get('major')
+        gender = session.get('gender')
         
-        filterRequests(course_id, course_number, session['major'], session['gender'], cur)
+        filterRequests(course_id, course_number, major, gender)
 
             
 
