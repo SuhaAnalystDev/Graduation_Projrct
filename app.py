@@ -1769,6 +1769,7 @@ def view_table(table):
 
     cursor.execute(f"SELECT * FROM `{table}`")
     rows = cursor.fetchall()
+    print(rows)
 
     cursor.close()
     conn.close()
@@ -1797,6 +1798,7 @@ def add_row(table):
 # Delete a row
 @app.route("/table/<table>/delete/<int:row_id>", methods=["POST"])
 def delete_row(table, row_id):
+    print(row_id)
     conn = db_connection()
     cursor = conn.cursor()
     cursor.execute(f"DELETE FROM `{table}` WHERE id = %s", (row_id,))

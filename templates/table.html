@@ -275,9 +275,11 @@
                 <input
                   type="text"
                   value="{{ row[col] }}"
-                  id="cell-{{ row.id }}-{{ col }}"
                   class="form-control"
                 />
+                <script>
+                  console.log("{{ row[col] }}")
+                </script>
                 {% else %} {{ row[col] }} {% endif %}
               </td>
               {% endfor %}
@@ -389,6 +391,7 @@
       }
 
       function deleteRow(table, rowId) {
+      console.log(rowId)
         fetch(`/table/${table}/delete/${rowId}`, {
           method: "POST",
         }).then(() => location.reload());
