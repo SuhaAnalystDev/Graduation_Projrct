@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
   <head>
     <title>Table {{ table }}</title>
-    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css" />
     <link rel="stylesheet" href="/static/CSS/style.css" />
     <script src="/static/JS/main.js"></script>
     <style>
@@ -268,17 +268,18 @@
           </thead>
           <tbody>
             {% for row in rows %}
-            <tr id="row-{{ row.id }}">
+            <tr id="row-{{ row['ID'] }}">
               {% for col in columns %}
               <td>
-                {% if col != 'id' %}
+                {% if col|lower != 'id' %}
                 <input
                   type="text"
+                  id="input-{{ row['ID'] }}-{{ col }}"
                   value="{{ row[col] }}"
                   class="form-control"
                 />
                 <script>
-                  console.log("{{ row[col] }}")
+                  console.log("{{ row[col] }}");
                 </script>
                 {% else %} {{ row[col] }} {% endif %}
               </td>
@@ -289,7 +290,7 @@
               >
                 <button
                   class="btn h-100 text-success d-flex justify-content-center align-items-cente border-end rounded-0"
-                  onclick="updateRow('{{ table }}', '{{ row.id }}')"
+                  onclick="updateRow('{{ table }}', '{{ row['ID'] }}')"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +311,7 @@
                 </button>
                 <button
                   class="btn h-100 text-danger d-flex justify-content-center align-items-center"
-                  onclick="deleteRow('{{ table }}', '{{ row.id }}')"
+                  onclick="deleteRow('{{ table }}', '{{ row['ID'] }}')"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -361,9 +362,10 @@
     <script>
       function updateRow(table, rowId) {
         const updatedData = {};
-        const columns = document.querySelectorAll(`#row-${rowId} input`);
-        columns.forEach((input) => {
-          const colName = input.id.split("-")[2];
+        const inputs = document.querySelectorAll(`#row-${rowId} input`);
+        inputs.forEach((input) => {
+          const parts = input.id.split("-");
+          const colName = parts.slice(2).join("-");
           updatedData[colName] = input.value;
         });
 
@@ -391,7 +393,7 @@
       }
 
       function deleteRow(table, rowId) {
-      console.log(rowId)
+        console.log(rowId);
         fetch(`/table/${table}/delete/${rowId}`, {
           method: "POST",
         }).then(() => location.reload());

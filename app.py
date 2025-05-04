@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, get_flashed_messages, jsonify
 import pymysql
+from pymysql.err import OperationalError, IntegrityError
 from dotenv import load_dotenv
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -1781,17 +1782,41 @@ def view_table(table):
 def add_row(table):
     conn = db_connection()
     cursor = conn.cursor()
-    data = request.form.to_dict()
-    columns = ", ".join(f"`{k}`" for k in data.keys())
-    placeholders = ", ".join(["%s"] * len(data))
-    values = list(data.values())
 
-    sql = f"INSERT INTO `{table}` ({columns}) VALUES ({placeholders})"
-    cursor.execute(sql, values)
-    conn.commit()
+    try:
+        cursor.execute(f"SHOW COLUMNS FROM `{table}`")
+        columns_info = cursor.fetchall()
 
-    cursor.close()
-    conn.close()
+        excluded_columns = set()
+        for col in columns_info:
+            field_name = col["Field"]
+            extra_info = col["Extra"].lower()
+            if "auto_increment" in extra_info or "generated" in extra_info:
+                excluded_columns.add(field_name)
+
+        form_data = {
+            key: value
+            for key, value in request.form.items()
+            if key not in excluded_columns and value.strip()
+        }
+
+        if not form_data:
+            return redirect(url_for("show_table", table=table))
+
+        columns = ", ".join(f"`{k}`" for k in form_data)
+        placeholders = ", ".join(["%s"] * len(form_data))
+        values = list(form_data.values())
+
+        sql = f"INSERT INTO `{table}` ({columns}) VALUES ({placeholders})"
+        cursor.execute(sql, values)
+        conn.commit()
+
+    except (OperationalError, IntegrityError) as e:
+        print("Database Error:", e)
+
+    finally:
+        cursor.close()
+        conn.close()
 
     return redirect(f"/table/{table}")
 
@@ -1815,17 +1840,27 @@ def update_cell(table, row_id):
     conn = db_connection()
     cursor = conn.cursor()
 
-    col_value_pairs = request.form.items() 
-    set_clause = ", ".join([f"`{col}` = %s" for col, value in col_value_pairs])
-    values = [value for col, value in col_value_pairs]
+    forbidden_columns = ["Academic_Number_Unique"]
+    col_value_pairs = [(col, val) for col, val in request.form.items() if col not in forbidden_columns]
 
-    cursor.execute(f"UPDATE `{table}` SET {set_clause} WHERE id = %s", (*values, row_id))
-    conn.commit()
+    if not col_value_pairs:
+        return "No updatable fields provided.", 400
 
-    cursor.close()
-    conn.close()
-    
-    return "", 204  
+    set_clause = ", ".join([f"`{col}` = %s" for col, _ in col_value_pairs])
+    values = [val for _, val in col_value_pairs]
+
+    sql = f"UPDATE `{table}` SET {set_clause} WHERE id = %s"
+
+    try:
+        cursor.execute(sql, (*values, row_id))
+        conn.commit()
+        return "", 204
+    except Exception as e:
+        print(f"[ERROR] Update failed: {e}")
+        return "Internal Server Error", 500
+    finally:
+        cursor.close()
+        conn.close()
 
 
 
